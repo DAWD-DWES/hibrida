@@ -64,12 +64,12 @@ if (!empty($_POST)) {
     $lat = filter_input(INPUT_POST, "lat", FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     $lon = filter_input(INPUT_POST, "lon", FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-    if (isset($_POST['boton_tiempo'])) {
+    if (filter_has_var(INPUT_POST, 'boton_tiempo')) {
         $data = getWeatherData($lat, $lon);
         $tiempo = $data->weather[0]->main;
         $temperatura = $data->main->temp;
         $humedad = $data->main->humidity;
-    } else if (isset($_POST['boton_direccion'])) {
+    } else if (filter_has_var(INPUT_POST, 'boton_direccion')) {
         $data = getLocationData($lat, $lon);
         if (empty($data->resourceSets[0]->resources)) {
             $localidad = "No ubicable";
