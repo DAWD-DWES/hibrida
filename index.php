@@ -1,5 +1,13 @@
 <?php
-include "api.php";
+require 'vendor/autoload.php';
+
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+$weatherApiKey = $_ENV['WEATHER_API_KEY'];
+$mapApiKey = $_ENV['MAP_API_KEY'];
 
 function getWeatherData(float $lat, float $lon) {
     global $weatherApiKey;
@@ -69,9 +77,9 @@ if (!empty($_POST)) {
             $pais = "No ubicable";
         } else {
             $direccion = $data->resourceSets[0]->resources[0]->address;
-            $localidad = $direccion->adminDistrict;
-            $ciudad = $direccion->locality;
-            $pais = $direccion->countryRegion;
+            $localidad = $direccion->adminDistrict ?? '';
+            $ciudad = $direccion->locality ?? $direccion->adminDistrict2 ?? '';
+            $pais = $direccion->countryRegion ?? '';
         }
     }
 }
@@ -98,12 +106,13 @@ if (!empty($_POST)) {
                         <div class = "card-body">
                             <div class = "input-group my-2">
                                 <span class = "input-group-text"><i class = "bi bi-geo-alt-fill"></i></span>
-                                <input name = "lat" type = "number" class = "form-control" placeholder = "Latitud" id = 'lat' step = '0.000001' <?php if (isset($lat)):
-    ?> value='<?= $lat ?>' <?php endif ?> required>
+                                <input name = "lat" type = "number" class = "form-control" placeholder = "Latitud" id = 'lat' step = '0.000001' 
+                                       value = "<?= $lat ?? '' ?>" required>
                             </div>
                             <div class="input-group my-2">                               
                                 <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>      
-                                <input name="lon" type="number" class="form-control" placeholder="longitud" id='lon' step="0.000001" <?php if (isset($lon)): ?> value='<?= $lon ?>' <?php endif ?> required>
+                                <input name="lon" type="number" class="form-control" placeholder="longitud" id='lon' step="0.000001" 
+                                    value = "<?= $lon ?? '' ?>" required>
                             </div>
                             <div class="form-group my-2">
                                 <input type="submit" name="boton_direccion" class="btn btn-info mr-2" id="vDireccion" value="Ver Direccion" />
@@ -117,27 +126,27 @@ if (!empty($_POST)) {
                         <div class="card-body">
                             <div class="input-group my-2">
                                 <span class="input-group-text" style="width:2.5rem;"><i class="bi bi-pin-fill"></i></span>
-                                <input type="text" name="localidad" class="form-control" placeholder="Localidad" id='dir' readonly <?php if (isset($localidad)): ?> value='<?= $localidad ?>' <?php endif ?>>
+                                <input type="text" name="localidad" class="form-control" placeholder="Localidad" id='dir' readonly value="<?= $localidad ?? ''?>">
                             </div>
                             <div class="input-group my-2">
                                 <span class="input-group-text" style="width:2.5rem;"><i class="bi bi-building"></i></span>
-                                <input type="text" name="ciudad" class="form-control" placeholder="Ciudad" id="ciu" readonly <?php if (isset($ciudad)): ?> value='<?= $ciudad ?>' <?php endif ?>>
+                                <input type="text" name="ciudad" class="form-control" placeholder="Ciudad" id="ciu" readonly value="<?= $ciudad ?? ''?>">
                             </div>
                             <div class="input-group my-2">
                                 <span class="input-group-text" style="width:2.5rem;"><i class="bi bi-globe"></i></span>
-                                <input type="text" name="pais" class="form-control" placeholder="País" id="pai" readonly <?php if (isset($pais)): ?> value='<?= $pais ?>' <?php endif ?>>
+                                <input type="text" name="pais" class="form-control" placeholder="País" id="pai" readonly value="<?= $pais ?? ''?>">
                             </div>
                             <div class="input-group my-2">
                                 <span class="input-group-text" style="width:2.5rem;"><i class="bi bi-umbrella-fill"></i></span>
-                                <input type="text" name="tiempo" class="form-control" placeholder="Tiempo" id="tie" readonly  <?php if (isset($tiempo)): ?> value='<?= $tiempo ?>' <?php endif ?>>
+                                <input type="text" name="tiempo" class="form-control" placeholder="Tiempo" id="tie" readonly  value="<?= $tiempo ?? ''?>">
                             </div>
                             <div class="input-group my-2">
                                 <span class="input-group-text" style="width:2.5rem;"><i class="bi bi-thermometer-half"></i></span>
-                                <input type="text" name="temperatura" class="form-control" placeholder="Temperatura (ºC)" id="tem" readonly <?php if (isset($temperatura)): ?> value='<?= $temperatura ?>' <?php endif ?>>
+                                <input type="text" name="temperatura" class="form-control" placeholder="Temperatura (ºC)" id="tem" readonly value="<?= $temperatura ?? ''?>">
                             </div>
                             <div class="input-group form my-2">
                                 <span class="input-group-text" style="width:2.5rem;"><i class="bi bi-droplet-fill"></i></span>
-                                <input type="text" name="humedad" class="form-control" placeholder="Humedad (%)" id="hum" readonly <?php if (isset($humedad)): ?> value='<?= $humedad ?>' <?php endif ?>>
+                                <input type="text" name="humedad" class="form-control" placeholder="Humedad (%)" id="hum" readonly value="<?= $humedad ?? ''?>">
                             </div>
                         </div>
                     </div>
