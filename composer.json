@@ -1,0 +1,15 @@
+{
+    "name": "dawdistancia/ruta",
+    "type": "project",
+    "require": {
+        "vlucas/phpdotenv": "^5.4"
+    },
+    "autoload": {
+    },
+    "authors": [
+        {
+            "name": "Iván",
+            "email": "jivanrod@gmail.com"
+        }
+    ]
+}
